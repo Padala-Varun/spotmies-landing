@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spotmies — landing page redesign
 
-## Getting Started
+A redesigned homepage for [spotmies.com](https://www.spotmies.com), built with Next.js 16, Tailwind CSS v4, Motion, Lenis and React Three Fiber.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build && npm start   # production
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Edit content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All copy and data (services, projects, testimonials, FAQ, contact details, logos) live in [`lib/content.ts`](lib/content.ts). Images are in `public/` (`logos/`, `works/`, `founders/`, `people/`, `expertise/`, `designs/`, `brand/`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contact form
 
-## Learn More
+The form posts to `app/api/contact/route.ts`. Set `CONTACT_WEBHOOK_URL` (Slack, Zapier, Make, Formspree, a CRM…) to receive submissions as JSON. Without it, the form opens the visitor's email app with the message prefilled to `info@spotmies.com`.
 
-To learn more about Next.js, take a look at the following resources:
+## Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `components/sections/` — one file per page section, in page order in `app/page.tsx`
+- `components/ui/` — shared pieces (reveals, magnetic buttons, spotlight cards, velocity marquee, cursor)
+- `components/webgl/` — hero particle core (loaded client-only, skipped for reduced motion / no WebGL)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Accessibility & performance
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `prefers-reduced-motion` turns off smooth scroll, the intro, the WebGL scene and continuous animations.
+- The intro plays once per browser session.
+- The showreel videos load only when the section is near the viewport and can be paused or muted.
